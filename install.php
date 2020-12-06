@@ -9,7 +9,7 @@
  */
 
 /** 定义根目录 */
-define('__TYPECHO_ROOT_DIR__', dirname(__FILE__));
+define('__TYPECHO_ROOT_DIR__', '/app'); define('__TYPECHO_SITE_URL__', '/');
 
 /** 定义插件目录(相对路径) */
 define('__TYPECHO_PLUGIN_DIR__', '/usr/plugins');
@@ -299,7 +299,7 @@ Typecho_Cookie::set('__typecho_lang', $lang);
                                         $installDb->query($installDb->insert('table.options')->rows(array('name' => 'title', 'user' => 0, 'value' => 'Hello World')));
                                         $installDb->query($installDb->insert('table.options')->rows(array('name' => 'description', 'user' => 0, 'value' => 'Just So So ...')));
                                         $installDb->query($installDb->insert('table.options')->rows(array('name' => 'keywords', 'user' => 0, 'value' => 'typecho,php,blog')));
-                                        $installDb->query($installDb->insert('table.options')->rows(array('name' => 'rewrite', 'user' => 0, 'value' => 0)));
+                                        $installDb->query($installDb->insert('table.options')->rows(array('name' => 'rewrite', 'user' => 0, 'value' => 1)));
                                         $installDb->query($installDb->insert('table.options')->rows(array('name' => 'frontPage', 'user' => 0, 'value' => 'recent')));
                                         $installDb->query($installDb->insert('table.options')->rows(array('name' => 'frontArchive', 'user' => 0, 'value' => 0)));
                                         $installDb->query($installDb->insert('table.options')->rows(array('name' => 'commentsRequireMail', 'user' => 0, 'value' => 1)));
@@ -547,6 +547,7 @@ Typecho_Db::set(\$db);
                                     $contents = implode('', $lines);
                                     if (!Typecho_Common::isAppEngine()) {
                                         @file_put_contents('./config.inc.php', $contents);
+                                        system("cp -v /app/config.inc.php /data/config.inc.php && rm -f /app/config.inc.php && ln -sf /data/config.inc.php /app/config.inc.php");
                                     }
 
                                     if (!file_exists('./config.inc.php')) {
