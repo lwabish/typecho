@@ -229,7 +229,18 @@ class Typecho_Common
      */
     public static function __autoLoad($className)
     {
-        @include_once str_replace(array('\\', '_'), '/', $className) . '.php';
+        $classFile = str_replace(array('\\', '_'), '/', $className) . '.php';
+        $systemPath = self::url($classFile, __TYPECHO_ROOT_DIR__ . '/var');
+
+        if (file_exists($systemPath)) {
+            @include_once $systemPath;
+        } else {
+            $pluginPath = self::url($classFile, __TYPECHO_ROOT_DIR__ . __TYPECHO_PLUGIN_DIR__);
+
+            if (file_exists($pluginPath)) {
+                @include_once $pluginPath;
+            }
+        }
     }
 
     /**
@@ -1269,6 +1280,8 @@ EOF;
           'bin' => 'application/octet-stream',
           'oda' => 'application/oda',
           'ogg' => 'application/ogg',
+          'oga' => 'audio/ogg',
+          'ogv' => 'video/ogg',
           'prf' => 'application/pics-rules',
           'key' => 'application/pgp-keys',
           'pdf' => 'application/pdf',
@@ -1439,6 +1452,7 @@ EOF;
           'mpega' => 'audio/mpeg',
           'mp2' => 'audio/mpeg',
           'mp3' => 'audio/mpeg',
+          'mp4' => 'video/mp4',
           'm3u' => 'audio/x-mpegurl',
           'sid' => 'audio/prs.sid',
           'aif' => 'audio/x-aiff',
